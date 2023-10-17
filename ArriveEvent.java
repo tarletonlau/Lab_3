@@ -53,12 +53,8 @@ class ArriveEvent implements Event {
         if (availableServerIndex >= 0) {
             Server server = shop.getServer(availableServerIndex);
 
-            //update server and shop
-            Server updatedServer = server.updateAvailTime(this.customer.getArrivalTime());
-            shop = shop.updateShop(availableServerIndex,updatedServer);
-
             // return ServeEvent
-            nextEvent = new ServeEvent(this.customer,updatedServer, this.eventTime);
+            nextEvent = new ServeEvent(this.customer,server, this.eventTime);
         
         } else {
     

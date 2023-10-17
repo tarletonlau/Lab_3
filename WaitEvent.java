@@ -55,18 +55,19 @@ class WaitEvent implements ServerAssociatedEvent {
 
         int queueIndex = server.queueIndex(this.customer);
 
+        //check if customer is at front of queue, if yes, can serve them
         if (queueIndex == 0) {
             double nextEventTime = server.getAvailableTime();
 
             //return a ServeEvent at the serversNextAvail time
             nextEvent = new ServeEvent(this.customer, server, nextEventTime);
 
-        } else if (queueIndex > 0) {
+        //if not front of queue, keep queueing
+        } else {
+            //move their time to the next time server is available to check again
             double nextAvailTime = server.getAvailableTime();
 
             nextEvent = new WaitEvent(this.customer, server, nextAvailTime, false);
-        } else {
-            nextEvent = this;
         }
 
         return new Pair<Shop,Event>(shop,nextEvent);

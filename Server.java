@@ -1,8 +1,8 @@
 class Server {
-    private final int serverIndex;
-    private final double serverAvailableTime;
-    private final ImList<Customer> serverQueue;
-    private final int qMax;
+    protected final int serverIndex;
+    protected final double serverAvailableTime;
+    protected final ImList<Customer> serverQueue;
+    protected final int qMax;
 
     Server(int serverIndex, double serverAvailableTime, int qMax, ImList<Customer> serverQueue) {
         this.serverIndex = serverIndex;
@@ -58,8 +58,8 @@ class Server {
 
     // update server time
     // for when server is used / blocked out for queueing
-    public Server use(double updatedTime) {
-        return new Server(this.serverIndex, updatedTime, this.qMax, this.serverQueue);
+    public Server use(double time) {
+        return new Server(this.serverIndex, time, this.qMax, this.serverQueue);
     }
 
     // =========================== CHECKS =========================================
