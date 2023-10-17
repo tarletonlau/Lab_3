@@ -62,8 +62,6 @@ class ServeEvent implements ServerAssociatedEvent {
         double updatedTime = this.eventTime + this.customer.getServiceTime();
         updatedServer = updatedServer.use(updatedTime);
 
-        double nextServerAvailTime = updatedServer.getAvailableTime();
-
         //update the shop with the server being used
         shop = shop.updateShop(serverIndex, updatedServer);
 
