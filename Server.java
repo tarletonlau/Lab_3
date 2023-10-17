@@ -48,8 +48,8 @@ class Server {
 
     //returns index of customer in queue, else return -1 if not there
     public int queueIndex(Customer customer) {
-        for (int i = 0; i < serverQueue.size(); i++) {
-            if (serverQueue.get(i).equals(customer)) {
+        for (int i = 0; i < this.serverQueue.size(); i++) {
+            if (this.serverQueue.get(i).equals(customer)) {
                 return i;
             }
         }
@@ -87,7 +87,7 @@ class Server {
     // ===================================================
 
     public String toString() {
-        return String.format("%.3f", this.serverAvailableTime);
+        return String.format("%d", this.serverIndex + 1);
     }
 }
 

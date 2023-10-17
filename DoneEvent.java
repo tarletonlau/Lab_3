@@ -34,7 +34,7 @@ class DoneEvent implements ServerAssociatedEvent {
     // ==================================================
 
     public String toString() {
-        return String.format("%.3f %s done serving by %d", 
-        this.eventTime, this.customer.toString(), this.allocatedServer.getServerIndex() + 1);
+        return String.format("%.3f %s done serving by %s",
+        this.eventTime, this.customer.toString(), this.allocatedServer.toString());
     }
 }

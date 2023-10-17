@@ -77,9 +77,9 @@ class WaitEvent implements ServerAssociatedEvent {
 
     public String toString() {
         if (firstTimeInQueue) {
-            return String.format("%.3f %s waits at %d",
+            return String.format("%.3f %s waits at %s",
                     this.eventTime, this.customer.toString(), 
-                    this.allocatedServer.getServerIndex() + 1);
+                    this.allocatedServer.toString());
         }
         return "";
     }

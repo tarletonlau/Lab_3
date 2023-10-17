@@ -75,9 +75,9 @@ class ServeEvent implements ServerAssociatedEvent {
     // =======================================================
 
     public String toString() {
-        return String.format("%.3f %s serves by %d", 
+        return String.format("%.3f %s serves by %s",
                 this.eventTime, this.customer.toString(),
-                this.allocatedServer.getServerIndex() + 1);
+                this.allocatedServer.toString());
     }
 }
 
