@@ -63,7 +63,7 @@ class Simulator {
 
             //adding currEvent to output print
             // "" is for repeating WaitEvents
-            if (currEvent.toString() != "") {
+            if (!currEvent.toString().isEmpty()) {
                 output.append(currEvent).append("\n");
             }
 
