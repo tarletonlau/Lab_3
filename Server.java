@@ -37,11 +37,13 @@ class Server {
 
     // add customer to queue
     public Server addQueue(Customer customer) {
-        return new Server(this.serverIndex, this.serverAvailableTime, this.qMax, this.queueManager.addQueue(customer));
+        return new Server(this.serverIndex, this.serverAvailableTime,
+                this.qMax, this.queueManager.addQueue(customer));
     }
 
     public Server deQueue() {
-        return new Server(this.serverIndex, this.serverAvailableTime, this.qMax, this.queueManager.deQueue());
+        return new Server(this.serverIndex, this.serverAvailableTime,
+                this.qMax, this.queueManager.deQueue());
     }
 
     //returns index of customer in queue, else return -1 if not there

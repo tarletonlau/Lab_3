@@ -8,8 +8,9 @@ class Simulator {
     private final Supplier<Double> serviceTimeSupplier;
     private final Supplier<Double> restTimeSupplier;
 
-    Simulator(Integer numOfServers, Integer numOfSelfChecks, Integer qMax, ImList<Double> arrivalTimes,
-        Supplier<Double> serviceTimeSupplier, Supplier<Double> restTimesSupplier) {
+    Simulator(Integer numOfServers, Integer numOfSelfChecks, Integer qMax,
+              ImList<Double> arrivalTimes, Supplier<Double> serviceTimeSupplier,
+              Supplier<Double> restTimesSupplier) {
         this.numOfServers = numOfServers;
         this.numOfSelfChecks = numOfSelfChecks;
         this.qMax = qMax;
@@ -26,7 +27,8 @@ class Simulator {
         // =================== Constructors =======================================
 
         // Creating the shop
-        Shop shop = new Shop(this.numOfServers, this.numOfSelfChecks, this.qMax, this.restTimeSupplier);
+        Shop shop = new Shop(this.numOfServers, this.numOfSelfChecks,
+                this.qMax, this.restTimeSupplier);
 
         // Creating PQ for events
         PQ<Event> eventQueue = new PQ<Event>(new EventComp());

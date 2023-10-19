@@ -6,6 +6,7 @@ class Shop {
     Shop(int numOfServers, int numOfSelfChecks, int qMax, Supplier<Double> restTimeSupplier) {
         this.servers = initialize(numOfServers,numOfSelfChecks,qMax,restTimeSupplier);
     }
+
     Shop(ImList<Server> servers) {
         this.servers = servers;
     }
@@ -28,7 +29,8 @@ class Shop {
 
     // ========================== HELPERS  ================================
 
-    private ImList<Server> initialize(int numOfServers, int numOfSelfChecks, int qMax, Supplier<Double> restTimeSupplier) {
+    private ImList<Server> initialize(int numOfServers, int numOfSelfChecks,
+                                      int qMax, Supplier<Double> restTimeSupplier) {
         ImList<Server> tempServers = new ImList<>();
 
         //create servers
@@ -39,7 +41,7 @@ class Shop {
 
         //create self checkouts
         QueueManager sharedQueue = new QueueManager(new ImList<Customer>());
-        for (int i = numOfServers; i < (numOfServers+numOfSelfChecks); i++) {
+        for (int i = numOfServers; i < (numOfServers + numOfSelfChecks); i++) {
             tempServers = tempServers.add(new SelfCheckOutServer(i,0.0,qMax,sharedQueue));
         }
         return tempServers;

@@ -1,17 +1,37 @@
 class SelfCheckOutServer extends Server {
-    SelfCheckOutServer(int serverIndex, double serverAvailableTime, int qMax, QueueManager sharedQueue) {
+    SelfCheckOutServer(int serverIndex, double serverAvailableTime,
+                       int qMax, QueueManager sharedQueue) {
         super(serverIndex,serverAvailableTime,qMax,sharedQueue);
     }
 
     // ====================== UPDATE METHODS =================================================
 
-    // ====================== QUEUE-related METHODS =================================================
+    @Override
+    public Server addQueue(Customer customer) {
+        return new SelfCheckOutServer(this.serverIndex, this.serverAvailableTime,
+                this.qMax, this.queueManager.addQueue(customer));
+    }
+
+    @Override
+    public Server deQueue() {
+        return new SelfCheckOutServer(this.serverIndex, this.serverAvailableTime,
+                this.qMax, this.queueManager.deQueue());
+    }
+
+    @Override
+    public Server use(double time) {
+        return new SelfCheckOutServer(this.serverIndex, time,
+                this.qMax, this.queueManager);
+    }
+
+    // ====================== QUEUE-related METHODS =======================================
     @Override
     public boolean isQueueAvail() {
         return true;
     }
 
-    // ============================================================================================
+
+    // =======================================================================================
 
     @Override
     public String toString() {
