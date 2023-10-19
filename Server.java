@@ -1,14 +1,14 @@
 class Server {
     protected final int serverIndex;
     protected final double serverAvailableTime;
-    protected final ImList<Customer> serverQueue;
+    protected final QueueManager queueManager;
     protected final int qMax;
 
-    Server(int serverIndex, double serverAvailableTime, int qMax, ImList<Customer> serverQueue) {
+    Server(int serverIndex, double serverAvailableTime, int qMax, QueueManager queueManager) {
         this.serverIndex = serverIndex;
         this.serverAvailableTime = serverAvailableTime;
         this.qMax = qMax;
-        this.serverQueue = serverQueue;
+        this.queueManager = queueManager;
     }
 
     /*
@@ -33,40 +33,33 @@ class Server {
 
     */
 
-    // ====================== UPDATE METHODS =================================================
+    // ====================== QUEUE METHODS =================================================
 
     // add customer to queue
     public Server addQueue(Customer customer) {
-        ImList<Customer> updatedQueue = this.serverQueue.add(customer);
-        return new Server(this.serverIndex, this.serverAvailableTime, this.qMax, updatedQueue);
+        return new Server(this.serverIndex, this.serverAvailableTime, this.qMax, this.queueManager.addQueue(customer));
     }
 
     public Server deQueue() {
-        ImList<Customer> updatedQueue = this.serverQueue.remove(0);
-        return new Server(this.serverIndex, this.serverAvailableTime, this.qMax, updatedQueue);
+        return new Server(this.serverIndex, this.serverAvailableTime, this.qMax, this.queueManager.deQueue());
     }
 
     //returns index of customer in queue, else return -1 if not there
     public int queueIndex(Customer customer) {
-        for (int i = 0; i < this.serverQueue.size(); i++) {
-            if (this.serverQueue.get(i).equals(customer)) {
-                return i;
-            }
-        }
-        return -1;
+        return this.queueManager.customerQueueIndex(customer);
     }
 
     // update server time
     // for when server is used / blocked out for queueing
     public Server use(double time) {
-        return new Server(this.serverIndex, time, this.qMax, this.serverQueue);
+        return new Server(this.serverIndex, time, this.qMax, this.queueManager);
     }
 
     // =========================== CHECKS =========================================
 
     // check if server is full
     public boolean isQueueAvail() {
-        return this.serverQueue.size() < this.qMax;
+        return this.queueManager.queueSize() < this.qMax;
     }
 
     // check if server is avail

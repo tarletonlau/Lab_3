@@ -26,7 +26,7 @@ class Simulator {
         // =================== Constructors =======================================
 
         // Creating the shop
-        Shop shop = new Shop(this.numOfServers, this.qMax, this.restTimeSupplier);
+        Shop shop = new Shop(this.numOfServers, this.numOfSelfChecks, this.qMax, this.restTimeSupplier);
 
         // Creating PQ for events
         PQ<Event> eventQueue = new PQ<Event>(new EventComp());

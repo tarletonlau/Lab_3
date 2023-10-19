@@ -3,10 +3,10 @@ import java.util.function.Supplier;
 class Shop {
     private final ImList<Server> servers;
 
-    public Shop(int numOfServers, int qMax, Supplier<Double> restTimeSupplier) {
-        this.servers = initialize(numOfServers,qMax,restTimeSupplier);
+    Shop(int numOfServers, int numOfSelfChecks, int qMax, Supplier<Double> restTimeSupplier) {
+        this.servers = initialize(numOfServers,numOfSelfChecks,qMax,restTimeSupplier);
     }
-    public Shop(ImList<Server> servers) {
+    Shop(ImList<Server> servers) {
         this.servers = servers;
     }
 
@@ -28,11 +28,19 @@ class Shop {
 
     // ========================== HELPERS  ================================
 
-    private ImList<Server> initialize(int numOfServers, int qMax, Supplier<Double> restTimeSupplier) {
+    private ImList<Server> initialize(int numOfServers, int numOfSelfChecks, int qMax, Supplier<Double> restTimeSupplier) {
         ImList<Server> tempServers = new ImList<>();
 
+        //create servers
         for (int i = 0; i < numOfServers; i++) {
-            tempServers = tempServers.add(new HumanServer(i,0.0, qMax, new ImList<Customer>(),restTimeSupplier));
+            tempServers = tempServers.add(new HumanServer(i,0.0, qMax,
+                    new QueueManager(new ImList<Customer>()),restTimeSupplier));
+        }
+
+        //create self checkouts
+        QueueManager sharedQueue = new QueueManager(new ImList<Customer>());
+        for (int i = numOfServers; i < (numOfServers+numOfSelfChecks); i++) {
+            tempServers = tempServers.add(new SelfCheckOutServer(i,0.0,qMax,sharedQueue));
         }
         return tempServers;
     }
