@@ -1,10 +1,6 @@
-class ArriveEvent implements Event {
-    private final double eventTime;
-    private final Customer customer;
-
+class ArriveEvent extends Event {
     ArriveEvent(Customer customer, double eventTime) {
-        this.eventTime = eventTime;
-        this.customer = customer;
+        super(customer,eventTime);
     }
 
     /*
@@ -28,16 +24,9 @@ class ArriveEvent implements Event {
 
      */
 
-    // ==================  Event interface ==========================
+    // ==================  abstract methods - Event  ==========================
 
-    public double eventTime() {
-        return this.eventTime;
-    }
-
-    public Customer getCustomer() {
-        return this.customer;
-    }
-
+    @Override
     public Statistics updateStatistics(Statistics stats) {
         //empty method, can update for future features
         return stats;
@@ -45,6 +34,7 @@ class ArriveEvent implements Event {
 
     // ======================== Main logic ============================
 
+    @Override
     public Pair<Shop, Event> process(Shop shop) {
         Event nextEvent = new LeaveEvent(this.customer,this.eventTime);
 
@@ -79,7 +69,8 @@ class ArriveEvent implements Event {
 
     // ==============================================
 
+    @Override
     public String toString() {
-        return String.format("%.3f %s arrives", this.eventTime, this.customer.toString());
+        return String.format("%s arrives", super.toString());
     }
 }

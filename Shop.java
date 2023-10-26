@@ -2,13 +2,16 @@ import java.util.function.Supplier;
 
 class Shop {
     private final ImList<Server> servers;
+    private final QueueManager sharedQueue;
 
-    Shop(int numOfServers, int numOfSelfChecks, int qMax, Supplier<Double> restTimeSupplier) {
+    Shop(int numOfServers, int numOfSelfChecks, int qMax, Supplier<Double> restTimeSupplier, QueueManager sharedQueue) {
         this.servers = initialize(numOfServers,numOfSelfChecks,qMax,restTimeSupplier);
+        this.sharedQueue = sharedQueue;
     }
 
-    Shop(ImList<Server> servers) {
+    Shop(ImList<Server> servers, QueueManager sharedQueue) {
         this.servers = servers;
+        this.sharedQueue = sharedQueue;
     }
 
     /* function of the shop:
@@ -40,9 +43,8 @@ class Shop {
         }
 
         //create self checkouts
-        QueueManager sharedQueue = new QueueManager(new ImList<Customer>());
         for (int i = numOfServers; i < (numOfServers + numOfSelfChecks); i++) {
-            tempServers = tempServers.add(new SelfCheckOutServer(i,0.0,qMax,sharedQueue));
+            tempServers = tempServers.add(new SelfCheckOutServer(i,0.0,qMax,this.sharedQueue));
         }
         return tempServers;
     }
@@ -69,7 +71,7 @@ class Shop {
 
     // ==============================================================
     public Shop updateShop(int serverIndex, Server server) {
-        return new Shop(this.servers.set(serverIndex, server));
+        return new Shop(this.servers.set(serverIndex, server),this.sharedQueue);
     }
 
     public Server getServer(int serverIndex) {

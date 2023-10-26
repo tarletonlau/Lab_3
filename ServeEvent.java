@@ -1,11 +1,9 @@
-class ServeEvent implements ServerAssociatedEvent {
-    private final double eventTime;
-    private final Customer customer;
+class ServeEvent extends Event {
+
     private final Server allocatedServer;
 
     ServeEvent(Customer customer, Server server, double eventTime) {
-        this.eventTime = eventTime;
-        this.customer = customer;
+        super(customer,eventTime);
         this.allocatedServer = server;
     }
 
@@ -27,14 +25,7 @@ class ServeEvent implements ServerAssociatedEvent {
 
     // =================  Event interface ==========================
 
-    public double eventTime() {
-        return this.eventTime;
-    }
-
-    public Customer getCustomer() {
-        return this.customer;
-    }
-
+    @Override
     public Statistics updateStatistics(Statistics stats) {
         // waitTime = ServeTime - customer ArrivalTime
         double waitTime = this.eventTime - this.customer.getArrivalTime();
@@ -44,6 +35,7 @@ class ServeEvent implements ServerAssociatedEvent {
 
     // ============================== Main logic =======================================
 
+    @Override
     public Pair<Shop,Event> process(Shop shop) {
 
         /* two process to complete
@@ -74,9 +66,10 @@ class ServeEvent implements ServerAssociatedEvent {
 
     // =======================================================
 
+    @Override
     public String toString() {
-        return String.format("%.3f %s serves by %s",
-                this.eventTime, this.customer.toString(),
+        return String.format("%s serves by %s",
+                super.toString(),
                 this.allocatedServer.toString());
     }
 }

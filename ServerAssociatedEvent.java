@@ -1,2 +1,0 @@
-interface ServerAssociatedEvent extends Event {
-}

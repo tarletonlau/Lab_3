@@ -1,12 +1,10 @@
-class WaitEvent implements ServerAssociatedEvent {
-    private final double eventTime;
-    private final Customer customer;
+class WaitEvent extends Event {
+
     private final Server allocatedServer;
     private final boolean firstTimeInQueue;
 
     WaitEvent(Customer customer, Server server, double eventTime, boolean firstTimeInQueue) {
-        this.eventTime = eventTime;
-        this.customer = customer;
+        super(customer,eventTime);
         this.allocatedServer = server;
         this.firstTimeInQueue = firstTimeInQueue;
     }
@@ -34,20 +32,14 @@ class WaitEvent implements ServerAssociatedEvent {
 
     // ========================  Event interface ==========================
 
-    public double eventTime() {
-        return this.eventTime;
-    }
-
-    public Customer getCustomer() {
-        return this.customer;
-    }
-
+    @Override
     public Statistics updateStatistics(Statistics stats) {
         return stats;
     }
 
     // ======================== Main logic ==========================
 
+    @Override
     public Pair<Shop,Event> process(Shop shop) {
         Event nextEvent;
         int serverIndex = this.allocatedServer.getServerIndex();
@@ -75,10 +67,11 @@ class WaitEvent implements ServerAssociatedEvent {
 
     // =======================================================================
 
+    @Override
     public String toString() {
         if (firstTimeInQueue) {
-            return String.format("%.3f %s waits at %s",
-                    this.eventTime, this.customer.toString(), 
+            return String.format("%s waits at %s",
+                    super.toString(),
                     this.allocatedServer.toString());
         }
         return "";

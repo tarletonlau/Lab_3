@@ -9,6 +9,16 @@ class HumanServer extends Server {
         this.restTimesSupplier = restTimesSupplier;
     }
 
+    /*
+    function of humanserver:
+    extension of server, with randomised rest times
+
+    variables:
+    - everything else same as a regular server
+    - restTimeSupplier
+        - generates random rest times
+    */
+
     // =======================UPDATE METHODS FOR HUMAN SERVER ========================
     @Override
     public Server addQueue(Customer customer) {

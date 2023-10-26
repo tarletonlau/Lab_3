@@ -1,28 +1,20 @@
-class LeaveEvent implements Event {
-    private final double eventTime;
-    private final Customer customer;
+class LeaveEvent extends Event {
+
 
     LeaveEvent(Customer customer, double eventTime) {
-        this.eventTime = eventTime;
-        this.customer = customer;
+        super(customer,eventTime);
     }
 
     // ================= Event Interface =================
 
-    public double eventTime() {
-        return this.eventTime;
-    }
-
-    public Customer getCustomer() {
-        return this.customer;
-    }
-
+    @Override
     public Statistics updateStatistics(Statistics stats) {
         return stats.incrementLeft();
     }
 
     // ============================== Main logic =======================================
 
+    @Override
     public Pair<Shop, Event> process(Shop shop) {
         // cop out for finding out what is a done/leave event
         // probably replace in the future
@@ -31,7 +23,8 @@ class LeaveEvent implements Event {
 
     // =================================================
 
+    @Override
     public String toString() {
-        return String.format("%.3f %s leaves", this.eventTime, this.customer.toString());
+        return String.format("%s leaves", super.toString());
     }
 }

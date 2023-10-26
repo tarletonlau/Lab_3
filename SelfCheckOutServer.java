@@ -4,6 +4,18 @@ class SelfCheckOutServer extends Server {
         super(serverIndex,serverAvailableTime,qMax,sharedQueue);
     }
 
+    /*
+    function of selfcheckout server
+    same as a regular server
+
+    only difference:
+    - shared queue for all selfcheckout servers
+
+    variables:
+    - everything else the same
+    - shared queue
+    */
+
     // ====================== UPDATE METHODS =================================================
 
     @Override
