@@ -20,17 +20,12 @@ class Simulator {
     }
 
     public String simulate() {
-        Statistics stats = new Statistics(0,0,0.0);
-
         StringBuilder output = new StringBuilder();
 
         // =================== Constructors =======================================
-
-        // Creating the shop
+        Statistics stats = new Statistics(0,0,0.0);
         Shop shop = new Shop(this.numOfServers, this.numOfSelfChecks,
                 this.qMax, this.restTimeSupplier);
-
-        // Creating PQ for events
         PQ<Event> eventQueue = new PQ<Event>(new EventComp());
 
         // =======================================================================

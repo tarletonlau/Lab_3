@@ -45,12 +45,12 @@ class ServeEvent extends Event {
 
         int serverIndex = this.allocatedServer.getServerIndex();
         Server server = shop.getServer(serverIndex);
-
-        Server updatedServer = server.deQueue();
+        shop = shop.removeCustomerFromServerQueue(server);
 
         // 1. update the shop
         //update the server as being used
 
+        Server updatedServer = shop.getServer(serverIndex);
         double updatedTime = this.eventTime + this.customer.getServiceTime();
         updatedServer = updatedServer.use(updatedTime);
 
