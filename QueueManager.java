@@ -1,3 +1,5 @@
+import java.util.stream.IntStream;
+
 class QueueManager {
     private final ImList<Customer> queue;
 
@@ -10,7 +12,7 @@ class QueueManager {
     }
 
     public QueueManager deQueue() {
-        return new QueueManager(this.queue.remove(0));
+        return (!this.queue.isEmpty()) ? new QueueManager(this.queue.remove(0)) : this;
     }
 
     // ==================================================================
@@ -20,12 +22,10 @@ class QueueManager {
     }
 
     public int customerQueueIndex(Customer customer) {
-        for (int i = 0; i < this.queueSize(); i++) {
-            if (this.queue.get(i).equals(customer)) {
-                return i;
-            }
-        }
-        return -1;
+        return IntStream.range(0, this.queueSize())
+                .filter(i -> this.queue.get(i).equals(customer))
+                .findFirst()
+                .orElse(-1);
     }
 
 

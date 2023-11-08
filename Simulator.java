@@ -26,11 +26,9 @@ class Simulator {
 
         // =================== Constructors =======================================
 
-        QueueManager sharedQueue = new QueueManager(new ImList<Customer>());
-
         // Creating the shop
         Shop shop = new Shop(this.numOfServers, this.numOfSelfChecks,
-                this.qMax, this.restTimeSupplier,sharedQueue);
+                this.qMax, this.restTimeSupplier);
 
         // Creating PQ for events
         PQ<Event> eventQueue = new PQ<Event>(new EventComp());

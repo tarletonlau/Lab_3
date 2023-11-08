@@ -1,7 +1,11 @@
 class SelfCheckOutServer extends Server {
+    private final QueueManager queueManager;
+
     SelfCheckOutServer(int serverIndex, double serverAvailableTime,
                        int qMax, QueueManager sharedQueue) {
         super(serverIndex,serverAvailableTime,qMax,sharedQueue);
+        this.queueManager = sharedQueue;
+
     }
 
     /*
@@ -16,7 +20,7 @@ class SelfCheckOutServer extends Server {
     - shared queue
     */
 
-    // ====================== UPDATE METHODS =================================================
+    // ====================== METHODS FOR SELF CHECK OUT =================================================
 
     @Override
     public Server addQueue(Customer customer) {
@@ -25,15 +29,15 @@ class SelfCheckOutServer extends Server {
     }
 
     @Override
-    public Server deQueue() {
-        return new SelfCheckOutServer(this.serverIndex, this.serverAvailableTime,
-                this.qMax, this.queueManager.deQueue());
-    }
-
-    @Override
     public Server use(double time) {
         return new SelfCheckOutServer(this.serverIndex, time,
                 this.qMax, this.queueManager);
+    }
+
+    @Override
+    public Server deQueue() {
+        return new SelfCheckOutServer(this.serverIndex, this.serverAvailableTime,
+                this.qMax, this.queueManager.deQueue());
     }
 
     // ====================== QUEUE-related METHODS =======================================
@@ -42,11 +46,10 @@ class SelfCheckOutServer extends Server {
         return true;
     }
 
-
     // =======================================================================================
 
     @Override
     public String toString() {
-        return String.format("self-check %d", this.serverIndex + 1);
+        return String.format("self-check %s", super.toString());
     }
 }

@@ -1,4 +1,4 @@
-class Server {
+abstract class Server {
     protected final int serverIndex;
     protected final double serverAvailableTime;
     protected final QueueManager queueManager;
@@ -33,31 +33,23 @@ class Server {
 
     */
 
-    // ====================== QUEUE METHODS =================================================
+    // ====================== abstract METHODS =================================================
 
     // add customer to queue
-    public Server addQueue(Customer customer) {
-        return new Server(this.serverIndex, this.serverAvailableTime,
-                this.qMax, this.queueManager.addQueue(customer));
-    }
+    public abstract Server addQueue(Customer customer);
 
-    public Server deQueue() {
-        return new Server(this.serverIndex, this.serverAvailableTime,
-                this.qMax, this.queueManager.deQueue());
-    }
+    public abstract Server deQueue();
+
+    // update server time
+    // for when server is used / blocked out for queueing
+    public abstract Server use(double time);
+
+    // =========================== CHECKS =========================================
 
     //returns index of customer in queue, else return -1 if not there
     public int queueIndex(Customer customer) {
         return this.queueManager.customerQueueIndex(customer);
     }
-
-    // update server time
-    // for when server is used / blocked out for queueing
-    public Server use(double time) {
-        return new Server(this.serverIndex, time, this.qMax, this.queueManager);
-    }
-
-    // =========================== CHECKS =========================================
 
     // check if server is full
     public boolean isQueueAvail() {
@@ -69,14 +61,16 @@ class Server {
         return customer.getArrivalTime() >= this.serverAvailableTime;
     }
 
-    // =================================================================================
-
     public int getServerIndex() {
         return this.serverIndex;
     }
 
     public double getAvailableTime() {
         return this.serverAvailableTime;
+    }
+
+    public int getQMax() {
+        return this.qMax;
     }
 
     // ===================================================

@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.util.function.Supplier;
 import java.util.Random;
-import java.util.stream.Stream;
 
 class Main {
     private static final Random RNG_REST = new Random(3L);

@@ -19,20 +19,12 @@ class HumanServer extends Server {
         - generates random rest times
     */
 
-    // =======================UPDATE METHODS FOR HUMAN SERVER ========================
+    // ======================= METHODS FOR HUMAN SERVER ========================
     @Override
     public Server addQueue(Customer customer) {
         return new HumanServer(this.serverIndex, this.serverAvailableTime, this.qMax,
                 this.queueManager.addQueue(customer), this.restTimesSupplier);
     }
-
-    @Override
-    public Server deQueue() {
-        return new HumanServer(this.serverIndex, this.serverAvailableTime, this.qMax,
-                this.queueManager.deQueue(), this.restTimesSupplier);
-    }
-
-    // =========================================================================================
 
     @Override
     public Server use(double time) {
@@ -41,4 +33,12 @@ class HumanServer extends Server {
         return new HumanServer(this.serverIndex, time, this.qMax,
                 this.queueManager, this.restTimesSupplier);
     }
+
+    @Override
+    public Server deQueue() {
+        return new HumanServer(this.serverIndex, this.serverAvailableTime, this.qMax,
+                this.queueManager.deQueue(), this.restTimesSupplier);
+    }
+
+    // ==========================================================================
 }
