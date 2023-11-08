@@ -1,5 +1,4 @@
 abstract class Event {
-
     protected final double eventTime;
     protected final Customer customer;
 
@@ -8,9 +7,13 @@ abstract class Event {
         this.customer = customer;
     }
 
+    // ==================  abstract methods ========================
+
     public abstract Pair<Shop,Event> process(Shop shop);
 
     public abstract Statistics updateStatistics(Statistics stats);
+
+    // ======================= comparator ===========================
 
     public int compareTo(Event other) {
         if (this.eventTime < other.eventTime) {
@@ -21,6 +24,8 @@ abstract class Event {
             return Double.compare(this.customer.getArrivalTime(), other.customer.getArrivalTime());
         }
     }
+
+    // ============================================================
 
     public String toString() {
         return String.format("%.3f %s", this.eventTime,this.customer);

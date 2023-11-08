@@ -44,7 +44,7 @@ abstract class Server {
     // for when server is used / blocked out for queueing
     public abstract Server use(double time);
 
-    // =========================== CHECKS =========================================
+    // =========================== helper methods =========================================
 
     //returns index of customer in queue, else return -1 if not there
     public int queueIndex(Customer customer) {
@@ -60,6 +60,8 @@ abstract class Server {
     public boolean isServerAvail(Customer customer) {
         return customer.getArrivalTime() >= this.serverAvailableTime;
     }
+
+    // =========================== getters =========================================
 
     public int getServerIndex() {
         return this.serverIndex;

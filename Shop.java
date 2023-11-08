@@ -18,13 +18,32 @@ class Shop {
 
     Shop(int numOfServers, int numOfSelfChecks, int qMax,
          Supplier<Double> restTimeSupplier) {
-        this.servers = initialize(numOfServers,numOfSelfChecks,qMax,restTimeSupplier);
+        this.servers = initialize(numOfServers, numOfSelfChecks, qMax, restTimeSupplier);
         this.sharedQueue = new QueueManager(new ImList<Customer>());
 
         this.numOfServers = numOfServers;
         this.numOfSelfChecks = numOfSelfChecks;
-     }
+    }
 
+    // constructor for servers
+    private ImList<Server> initialize(int numOfServers, int numOfSelfChecks,
+                                      int qMax, Supplier<Double> restTimeSupplier) {
+        ImList<Server> tempServers = new ImList<Server>();
+
+        //create servers
+        for (int i = 0; i < numOfServers; i++) {
+            tempServers = tempServers.add(new HumanServer(i, 0.0, qMax,
+                    new QueueManager(new ImList<Customer>()), restTimeSupplier));
+        }
+
+        //create selfcheckouts
+        for (int j = numOfServers; j < (numOfServers + numOfSelfChecks); j++) {
+            tempServers = tempServers.add(new SelfCheckOutServer(j, 0.0, qMax,
+                    this.sharedQueue));
+        }
+
+        return tempServers;
+    }
 
     /* function of the shop:
     shop is the one who will allocate each customer to a server
@@ -42,7 +61,8 @@ class Shop {
 
     */
 
-    // ====================== shop methods ================
+    // ====================== shop methods =====================================
+
     /*
     methods that allow shop to add and remove customers from the queue
     */
@@ -54,15 +74,16 @@ class Shop {
             // update all self-checkout servers with shared queue
             ImList<Server> updatedServers = new ImList<>(
                     StreamSupport.stream(this.servers.spliterator(), false)
-                            .map(s -> { if (isSelfCheckOut(s)) {
-                                return new SelfCheckOutServer(
-                                        s.getServerIndex(),
-                                        s.getAvailableTime(),
-                                        s.getQMax(),
-                                        updatedQueue);
-                            } else {
-                                return s;
-                            }
+                            .map(s -> {
+                                if (isSelfCheckOut(s)) {
+                                    return new SelfCheckOutServer(
+                                            s.getServerIndex(),
+                                            s.getAvailableTime(),
+                                            s.getQMax(),
+                                            updatedQueue);
+                                } else {
+                                    return s;
+                                }
                             })
                             .collect(Collectors.toList())
             );
@@ -73,7 +94,7 @@ class Shop {
             int serverIndex = server.getServerIndex();
             Server updatedServer = server.addQueue(customer);
 
-            return updateShop(serverIndex,updatedServer);
+            return updateShop(serverIndex, updatedServer);
         }
     }
 
@@ -83,15 +104,16 @@ class Shop {
 
             ImList<Server> updatedServers = new ImList<>(
                     StreamSupport.stream(servers.spliterator(), false)
-                            .map(s -> { if (isSelfCheckOut(s)) {
-                                return new SelfCheckOutServer(
-                                        s.getServerIndex(),
-                                        s.getAvailableTime(),
-                                        s.getQMax(),
-                                        updatedQueue);
-                            } else {
-                                return s;
-                            }
+                            .map(s -> {
+                                if (isSelfCheckOut(s)) {
+                                    return new SelfCheckOutServer(
+                                            s.getServerIndex(),
+                                            s.getAvailableTime(),
+                                            s.getQMax(),
+                                            updatedQueue);
+                                } else {
+                                    return s;
+                                }
                             })
                             .collect(Collectors.toList()) // Collect to a List first
             );
@@ -100,8 +122,12 @@ class Shop {
             int serverIndex = server.getServerIndex();
             Server updatedServer = server.deQueue();
 
-            return updateShop(serverIndex,updatedServer);
+            return updateShop(serverIndex, updatedServer);
         }
+    }
+
+    public Shop updateShop(int serverIndex, Server server) {
+        return new Shop(this.servers.set(serverIndex, server), this.sharedQueue, this.numOfServers, this.numOfSelfChecks);
     }
 
 //    public Shop serveCustomer(Customer customer) {
@@ -111,25 +137,6 @@ class Shop {
 //    }
 
     // ========================== HELPERS  ================================
-
-    private ImList<Server> initialize(int numOfServers, int numOfSelfChecks,
-                                      int qMax, Supplier<Double> restTimeSupplier) {
-        ImList<Server> tempServers = new ImList<Server>();
-
-        //create servers
-        for (int i = 0; i < numOfServers; i++) {
-            tempServers = tempServers.add(new HumanServer(i,0.0, qMax,
-                    new QueueManager(new ImList<Customer>()),restTimeSupplier));
-        }
-
-        //create selfcheckouts
-        for (int j = numOfServers; j < (numOfServers + numOfSelfChecks); j++) {
-            tempServers = tempServers.add(new SelfCheckOutServer(j,0.0,qMax,
-                    this.sharedQueue));
-        }
-
-        return tempServers;
-    }
 
     // find first available server, else return -1
     public int findAvailableServerIndex(Customer customer) {
@@ -155,15 +162,12 @@ class Shop {
         return (server.getServerIndex() >= this.numOfServers);
     }
 
-
-    // ==============================================================
-    public Shop updateShop(int serverIndex, Server server) {
-        return new Shop(this.servers.set(serverIndex, server), this.sharedQueue, this.numOfServers, this.numOfSelfChecks);
-    }
+    // ========================== getters  ================================
 
     public Server getServer(int serverIndex) {
         return this.servers.get(serverIndex);
     }
+
 
     // ====================================================================
 

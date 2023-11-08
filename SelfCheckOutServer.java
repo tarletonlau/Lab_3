@@ -41,6 +41,8 @@ class SelfCheckOutServer extends Server {
     }
 
     // ====================== QUEUE-related METHODS =======================================
+
+    //selfcheckout servers will always return true as they have a shared queue
     @Override
     public boolean isQueueAvail() {
         return true;
