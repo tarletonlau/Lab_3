@@ -18,8 +18,7 @@ class DoneEvent extends Event {
 
     @Override
     public Pair<Shop, Event> process(Shop shop) {
-        // cop out for finding out what is a done/leave event
-        // probably replace in the future
+        shop = shop.serverRest(this.allocatedServer);
         return new Pair<Shop,Event>(shop, this);
     }
 

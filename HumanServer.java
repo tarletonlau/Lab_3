@@ -28,8 +28,6 @@ class HumanServer extends Server {
 
     @Override
     public Server use(double time) {
-        double restTime = restTimesSupplier.get();
-        time += restTime;
         return new HumanServer(this.serverIndex, time, this.qMax,
                 this.queueManager, this.restTimesSupplier);
     }
@@ -38,6 +36,14 @@ class HumanServer extends Server {
     public Server deQueue() {
         return new HumanServer(this.serverIndex, this.serverAvailableTime, this.qMax,
                 this.queueManager.deQueue(), this.restTimesSupplier);
+    }
+
+    public Server rest() {
+        double restTime = this.restTimesSupplier.get();
+        double updatedTime = this.serverAvailableTime + restTime;
+
+        return new HumanServer(this.serverIndex, updatedTime, this.qMax,
+                this.queueManager, this.restTimesSupplier);
     }
 
     // ==========================================================================

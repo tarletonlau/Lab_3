@@ -44,6 +44,9 @@ abstract class Server {
     // for when server is used / blocked out for queueing
     public abstract Server use(double time);
 
+    public abstract Server rest();
+
+
     // =========================== helper methods =========================================
 
     //returns index of customer in queue, else return -1 if not there

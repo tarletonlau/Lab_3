@@ -1,4 +1,5 @@
 abstract class Event {
+
     protected final double eventTime;
     protected final Customer customer;
 
@@ -24,8 +25,6 @@ abstract class Event {
             return Double.compare(this.customer.getArrivalTime(), other.customer.getArrivalTime());
         }
     }
-
-    // ============================================================
 
     public String toString() {
         return String.format("%.3f %s", this.eventTime,this.customer);

@@ -23,9 +23,13 @@ class Simulator {
         StringBuilder output = new StringBuilder();
 
         // =================== Constructors =======================================
+
         Statistics stats = new Statistics(0,0,0.0);
-        Shop shop = new Shop(this.numOfServers, this.numOfSelfChecks,
-                this.qMax, this.restTimeSupplier);
+        QueueManager sharedQueue = new QueueManager(new ImList<Customer>());
+        Shop shop = Shop.initialize(this.numOfServers, this.numOfSelfChecks,
+                this.qMax, this.restTimeSupplier, sharedQueue);
+
+        // Creating PQ for events
         PQ<Event> eventQueue = new PQ<Event>(new EventComp());
 
         // =======================================================================

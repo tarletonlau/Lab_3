@@ -5,7 +5,6 @@ class SelfCheckOutServer extends Server {
                        int qMax, QueueManager sharedQueue) {
         super(serverIndex,serverAvailableTime,qMax,sharedQueue);
         this.queueManager = sharedQueue;
-
     }
 
     /*
@@ -20,7 +19,7 @@ class SelfCheckOutServer extends Server {
     - shared queue
     */
 
-    // ====================== METHODS FOR SELF CHECK OUT =================================================
+    // ====================== METHODS FOR SELF CHECK OUT ===================================
 
     @Override
     public Server addQueue(Customer customer) {
@@ -40,15 +39,11 @@ class SelfCheckOutServer extends Server {
                 this.qMax, this.queueManager.deQueue());
     }
 
-    // ====================== QUEUE-related METHODS =======================================
-
-    //selfcheckout servers will always return true as they have a shared queue
-    @Override
-    public boolean isQueueAvail() {
-        return true;
+    public Server rest() {
+        return this;
     }
 
-    // =======================================================================================
+    // ====================================================================================
 
     @Override
     public String toString() {

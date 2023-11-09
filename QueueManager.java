@@ -15,7 +15,7 @@ class QueueManager {
         return (!this.queue.isEmpty()) ? new QueueManager(this.queue.remove(0)) : this;
     }
 
-    // =========================== helpers ===============================
+    // ==================================================================
 
     public int queueSize() {
         return this.queue.size();
@@ -27,5 +27,6 @@ class QueueManager {
                 .findFirst()
                 .orElse(-1);
     }
+
 
 }

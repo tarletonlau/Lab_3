@@ -36,31 +36,31 @@ class ArriveEvent extends Event {
 
     @Override
     public Pair<Shop, Event> process(Shop shop) {
-        //return LeaveEvent by default
         Event nextEvent = new LeaveEvent(this.customer,this.eventTime);
+
         int availableServerIndex = shop.findAvailableServerIndex(this.customer);
 
         if (availableServerIndex >= 0) {
-            // return ServeEvent
-            nextEvent = new ServeEvent(
-                    this.customer,
-                    shop.getServer(availableServerIndex),
-                    this.eventTime);
+            //return ServeEvent
+            Server server = shop.getServer(availableServerIndex);
+            nextEvent = new ServeEvent(this.customer, server, this.eventTime);
         
         } else {
-            // logic to process whether wait or leave
+            //logic to process whether wait or leave
             int availableQueueIndex = shop.findAvailableQueueIndex();
 
             if (availableQueueIndex >= 0) {
-                // add customer to queue and update the shop
+                //update shop by adding customer
                 Server server = shop.getServer(availableQueueIndex);
                 shop = shop.addCustomerToServerQueue(this.customer,server);
-                Server updatedServer = shop.getServer(availableQueueIndex);
 
                 // return WaitEvent
+                Server updatedServer = shop.getServer(availableQueueIndex);
                 nextEvent = new WaitEvent(this.customer, updatedServer, this.eventTime, true);
             }
         }
+        //return LeaveEvent by default
+        // Serve and Wait will allocated by the logic
         return new Pair<Shop,Event>(shop,nextEvent);
     }
 

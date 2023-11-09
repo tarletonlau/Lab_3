@@ -43,22 +43,15 @@ class ServeEvent extends Event {
            2. return DoneEvent
         */
 
-        int serverIndex = this.allocatedServer.getServerIndex();
-        Server server = shop.getServer(serverIndex);
-        shop = shop.removeCustomerFromServerQueue(server);
+        double serviceTime = this.customer.getServiceTime();
+        double updatedTime = this.eventTime + serviceTime;
 
-        // 1. update the shop
-        //update the server as being used
-
-        Server updatedServer = shop.getServer(serverIndex);
-        double updatedTime = this.eventTime + this.customer.getServiceTime();
-        updatedServer = updatedServer.use(updatedTime);
-
-        //update the shop with the server being used
-        shop = shop.updateShop(serverIndex, updatedServer);
+        shop = shop.removeCustomerFromServerQueue(this.allocatedServer);
+        shop = shop.useServer(this.allocatedServer,updatedTime);
 
         // 2. return DoneEvent
-        Event nextEvent = new DoneEvent(this.customer,updatedServer, updatedTime);
+        Server updatedServer = shop.getServer(this.allocatedServer.getServerIndex());
+        Event nextEvent = new DoneEvent(this.customer, updatedServer, updatedTime);
 
         //return updated shop with DoneEvent
         return new Pair<Shop, Event>(shop,nextEvent);
